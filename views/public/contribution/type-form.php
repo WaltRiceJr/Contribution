@@ -6,7 +6,20 @@ $isAllowed = $type->isFileAllowed();
 $allowMultipleFiles = $isAllowed && $type->multiple_files;
 ?>
 <?php if (!isset($process) || $process == 'add'): ?>
-<h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
+    <?php $vowels = array('A', 'E', 'I', 'O', 'U'); ?>
+    <?php if (!empty($type->form_title)): ?>
+        <h2><?php echo $type->form_title; ?></h2>
+    <?php elseif (in_array(substr($type->display_name, 0, 1), $vowels)) : ?>
+        <h2><?php echo __('Contribute an %s', $type->display_name); ?></h2>
+    <?php else : ?>
+        <h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
+    <?php endif; ?>
+<?php endif; ?>
+
+<?php if (!empty($type->form_preface)): ?>
+    <p class="explanation">
+        <?php echo $type->form_preface ?>
+    </p>
 <?php endif; ?>
 
 <?php
@@ -19,7 +32,13 @@ if ($isRequired): ?>
     <div id="files-metadata" class="inputs five columns omega">
         <div id="upload-files" class="files">
             <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
-            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+            <p class="explanation">
+                <?php if (empty($type->upload_explanation)) : ?>
+                    <?php echo __('The maximum file size is %s.', max_file_size()); ?>
+                <?php else : ?>
+                    <?php echo $type->upload_explanation; ?>
+                <?php endif; ?>
+            </p>
         </div>
     </div>
 </div>

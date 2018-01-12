@@ -118,6 +118,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL,
             `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             `add_tags` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `upload_explanation` mediumtext COLLATE utf8_unicode_ci,
+            `form_preface` mediumtext COLLATE utf8_unicode_ci,
+            `form_title` tinytext COLLATE utf8_unicode_ci,
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=InnoDB;";
@@ -288,6 +291,25 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $pagePath = get_option('contribution_page_path');
             if (empty($pagePath)) {
                 set_option('contribution_page_path', $this->_options['contribution_page_path']);
+            }
+        }
+
+        if (version_compare($oldVersion, '3.1.5', '<')) {
+            // Need to check columns with old versions.
+            $sql = "SHOW COLUMNS IN `{$db->ContributionType}`";
+            $result = $db->query($sql);
+            $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
+            if (!in_array('upload_explanation', $cols)) {
+                $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `upload_explanation` mediumtext COLLATE utf8_unicode_ci";
+                $db->query($sql);
+            }
+            if (!in_array('form_preface', $cols)) {
+                $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `form_preface` mediumtext COLLATE utf8_unicode_ci";
+                $db->query($sql);
+            }
+            if (!in_array('form_title', $cols)) {
+                $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `form_title` tinytext COLLATE utf8_unicode_ci";
+                $db->query($sql);
             }
         }
     }

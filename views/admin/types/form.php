@@ -32,6 +32,18 @@
         </div>
      </div>
 
+    <div class="field">
+        <div class="two columns alpha">
+            <label><?php echo __("Contribution Form Title"); ?></label>
+        </div>
+        <div class="inputs five columns omega">
+            <p class="explanation"><?php echo __("The title for the contribution form. If blank, the form will be titled 'Contribute A [Display Name]'."); ?></p>
+            <div class="input-block">
+             <?php echo $this->formText('form_title', $contribution_type->form_title, array()); ?>
+            </div>
+        </div>
+     </div>
+
      <div class="field">
         <div class="two columns alpha">
             <label><?php echo __("Allow File Upload Via Form"); ?></label>
@@ -67,6 +79,31 @@
             </div>
         </div>
      </div>
+
+    <div class="field">
+        <div class="two columns alpha">
+            <label><?php echo __("Contribution Form Preface Text"); ?></label>
+        </div>
+        <div class="inputs five columns omega">
+            <p class="explanation"><?php echo __("Additional instructions for the contributor at the top of the form page (optional)."); ?></p>
+            <div class="input-block">
+             <?php echo $this->formTextarea('form_preface', $contribution_type->form_preface, array('rows' => 8)); ?>
+            </div>
+        </div>
+     </div>
+
+    <div class="field">
+        <div class="two columns alpha">
+            <label><?php echo __("Explanatory Text for File Upload Field"); ?></label>
+        </div>
+        <div class="inputs five columns omega">
+            <p class="explanation"><?php echo __("Additional instructions for the contributor displayed with the file upload field (optional)."); ?></p>
+            <div class="input-block">
+             <?php echo $this->formTextarea('upload_explanation', $contribution_type->upload_explanation, array('rows' => 8)); ?>
+            </div>
+        </div>
+     </div>
+
 
      <div id="element-list" class="seven columns alpha">
         <ul id="contribution-type-elements" class="sortable">
